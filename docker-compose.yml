@@ -1,0 +1,33 @@
+services:
+  splunk:
+    image: splunk/splunk:latest
+    container_name: splunk
+    environment:
+      SPLUNK_START_ARGS: #--accept-license
+      SPLUNK_GENERAL_TERMS: --accept-sgt-current-at-splunk-com
+      SPLUNK_PASSWORD: changeme123
+      SPLUNK_LICENSE_URI: Free
+    ports:
+      - "8000:8000"
+      - "8089:8089"
+      - "9997:9997"
+    volumes:
+      - splunk_var:/opt/splunk/var
+      - ./splunk-apps:/opt/splunk/etc/apps
+      - ./zeek/logs:/zeek_logs
+    restart: unless-stopped
+
+  zeek:
+    image: zeek/zeek:latest
+    container_name: zeek
+    volumes:
+      - ./pcap-generation:/pcap
+      - ./zeek/logs:/logs
+    command: >
+      zeek -r /pcap/fake_phish_agenttesla.pcap Log::default_logdir=/logs LogAscii::use_json=T
+    #depends_on:
+    #  - splunk
+
+volumes:
+  splunk_etc:
+  splunk_var:

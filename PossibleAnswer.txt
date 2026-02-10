@@ -1,0 +1,39 @@
+For Agent Tesla sysmon process
+
+
+Initial Startup
+index=attack_data
+sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+EventCode=1
+| eval Image=coalesce(Image, process_path)
+| search Image="*agent*" OR Image="*.exe"
+| table _time host User Image CommandLine ParentImage ParentCommandLine
+| sort _time
+
+
+Writing to A file
+index=attack_data
+sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+EventCode=11
+| eval TargetFilename=coalesce(TargetFilename, file_path)
+| search TargetFilename="*.exe" OR TargetFilename="*AppData*" OR TargetFilename="*Temp*"
+| table _time host Image TargetFilename
+| sort _time
+
+
+Registry Presence
+index=attack_data
+sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+EventCode=13
+| search TargetObject="*\\Run*" OR TargetObject="*\\RunOnce*"
+| table _time host Image TargetObject Details
+| sort _time
+
+
+Network Connections
+index=attack_data
+sourcetype=XmlWinEventLog:Microsoft-Windows-Sysmon/Operational
+EventCode=3
+| where NOT cidrmatch("10.0.0.0/8", DestinationIp)
+| table _time host Image DestinationIp DestinationPort Protocol
+| sort _time
