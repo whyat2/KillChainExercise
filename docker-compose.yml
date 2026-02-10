@@ -15,6 +15,7 @@ services:
       - splunk_var:/opt/splunk/var
       - ./splunk-apps:/opt/splunk/etc/apps
       - ./zeek/logs:/zeek_logs
+      - ./evtx:/evtx
     restart: unless-stopped
 
   zeek:
