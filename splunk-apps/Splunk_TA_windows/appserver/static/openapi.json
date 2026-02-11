@@ -1,0 +1,41 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Splunk_TA_windows",
+        "version": "9.1.2",
+        "description": "Splunk Add-on for Microsoft Windows",
+        "contact": {
+            "name": "Splunk, Inc.",
+            "email": "support@splunk.com"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://{domain}:{port}/servicesNS/-/Splunk_TA_windows",
+            "variables": {
+                "domain": {
+                    "default": "localhost"
+                },
+                "port": {
+                    "default": "8089"
+                }
+            },
+            "description": "Access via management interface"
+        }
+    ],
+    "components": {
+        "schemas": {},
+        "securitySchemes": {
+            "BasicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    },
+    "paths": {},
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}

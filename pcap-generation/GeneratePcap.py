@@ -2,18 +2,10 @@ from scapy.all import *
 from datetime import datetime, timedelta
 import random
 from tcpStuff import tcp_handshake, tcp_ack, tcp_send
-
+from pcapDetails import ip
 # -----------------------------
 # Configuration Details (eg start time, IPs, etc)
 # -----------------------------
-victim_ip = "10.0.0.25"
-mail_server_ip = "10.0.0.5"
-web_server_ip = "203.0.113.50"     # TEST-NET-3 (RFC 5737)
-c2_ip = "198.51.100.77"            # TEST-NET-2 (RFC 5737)
-
-victim_mac = "00:11:22:33:44:55"
-server_mac = "66:77:88:99:aa:bb"
-
 sport_base = random.randint(1024, 60000)
 
 pkts = []
@@ -22,9 +14,6 @@ base_time = datetime.now()
 def ts(offset):
     return base_time + timedelta(seconds=offset)
 
-
-
-
 # -----------------------------
 # 1. Phishing Email (SMTP)
 # -----------------------------
@@ -32,8 +21,8 @@ def ts(offset):
 #TCP Handshake
 client_seq, server_seq = tcp_handshake(
     pkts, ts, 0,
-    victim_mac, server_mac,
-    victim_ip, mail_server_ip,
+    ip.victim_mac, ip.server_mac,
+    ip.victim_ip, ip.mail_server_ip,
     sport=1025, dport=25
 )
 
@@ -55,8 +44,8 @@ i = 3 # since start at 3 packets from handshake
 for cmd in smtp_payloads:
     client_seq = tcp_send(
         pkts, ts, i,
-        victim_mac, server_mac,
-        victim_ip, mail_server_ip,
+        ip.victim_mac, ip.server_mac,
+        ip.victim_ip, ip.mail_server_ip,
         1025, 25,
         client_seq, server_seq,
         cmd
@@ -65,8 +54,8 @@ for cmd in smtp_payloads:
 
     tcp_ack(
         pkts, ts, i,
-        server_mac, victim_mac,
-        mail_server_ip, victim_ip,
+        ip.server_mac, ip.victim_mac,
+        ip.mail_server_ip, ip.victim_ip,
         25, 1025,
         server_seq, client_seq
     )
@@ -89,8 +78,8 @@ http_response = (
 )
 
 pkt_get = (
-    Ether(src=victim_mac, dst=server_mac) /
-    IP(src=victim_ip, dst=web_server_ip) /
+    Ether(src=ip.victim_mac, dst=ip.server_mac) /
+    IP(src=ip.victim_ip, dst=ip.web_server_ip) /
     TCP(sport=sport_base, dport=80, flags="PA") /
     Raw(load=http_get)
 )
@@ -98,8 +87,8 @@ pkt_get.time = ts(10).timestamp()
 pkts.append(pkt_get)
 
 pkt_resp = (
-    Ether(src=server_mac, dst=victim_mac) /
-    IP(src=web_server_ip, dst=victim_ip) /
+    Ether(src=ip.server_mac, dst=ip.victim_mac) /
+    IP(src=ip.web_server_ip, dst=ip.victim_ip) /
     TCP(sport=80, dport=sport_base, flags="PA") /
     Raw(load=http_response)
 )
@@ -118,8 +107,8 @@ exfil_payload = (
 )
 
 pkt_exfil = (
-    Ether(src=victim_mac, dst=server_mac) /
-    IP(src=victim_ip, dst=c2_ip) /
+    Ether(src=ip.victim_mac, dst=ip.server_mac) /
+    IP(src=ip.victim_ip, dst=ip.c2_ip) /
     TCP(sport=sport_base + 1, dport=443, flags="PA") /
     Raw(load=exfil_payload)
 )

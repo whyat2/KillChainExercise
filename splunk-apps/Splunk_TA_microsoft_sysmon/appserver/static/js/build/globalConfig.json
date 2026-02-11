@@ -1,0 +1,10 @@
+{
+    "meta": {
+        "name": "Splunk_TA_microsoft_sysmon",
+        "restRoot": "Splunk_TA_microsoft_sysmon",
+        "displayName": "Splunk Add-on for Sysmon",
+        "version": "5.0.0",
+        "schemaVersion": "0.0.9",
+        "_uccVersion": "5.67.0"
+    }
+}

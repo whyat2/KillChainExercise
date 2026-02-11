@@ -8,4 +8,7 @@ It also uses event logs from DFIRMuseum (particularly the APTSimulatorVM_EventLo
 The goal is to show the flow of an attack at a very basic level.
 
 Note this lab uses the attack_data sysmon log involving the agent telsa malware.
+
+
 You should accept the splunk license in docker before doing stuff (uncomment line)
+And use software at your own risk.

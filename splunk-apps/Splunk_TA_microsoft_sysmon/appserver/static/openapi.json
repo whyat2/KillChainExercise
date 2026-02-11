@@ -1,0 +1,45 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Splunk_TA_microsoft_sysmon",
+        "version": "5.0.0",
+        "description": "Splunk Add-on for Sysmon",
+        "contact": {
+            "name": "Splunk, Inc.",
+            "email": "support@splunk.com"
+        },
+        "license": {
+            "name": "Splunk General Terms",
+            "url": "https://www.splunk.com/en_us/legal/splunk-general-terms.html"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://{domain}:{port}/servicesNS/-/Splunk_TA_microsoft_sysmon",
+            "variables": {
+                "domain": {
+                    "default": "localhost"
+                },
+                "port": {
+                    "default": "8089"
+                }
+            },
+            "description": "Access via management interface"
+        }
+    ],
+    "components": {
+        "schemas": {},
+        "securitySchemes": {
+            "BasicAuth": {
+                "type": "http",
+                "scheme": "basic"
+            }
+        }
+    },
+    "paths": {},
+    "security": [
+        {
+            "BasicAuth": []
+        }
+    ]
+}
