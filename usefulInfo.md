@@ -1,6 +1,7 @@
 | Event ID | Event Name                     | Description                                                                 |
 |----------|--------------------------------|-----------------------------------------------------------------------------|
 | 1        | Process Create                 | Logs when a process is created, including command line, parent process, and hashes. |
+| 3         | Network Access                | Logs when a process accesses the network |
 | 7        | Image Loaded                   | Logs when a module (DLL or executable image) is loaded by a process.      |
 | 10       | Process Access                 | Logs when a process accesses another process (e.g., for injection or credential dumping). |
 | 11       | File Create                    | Logs when a file is created or overwritten.                                |
