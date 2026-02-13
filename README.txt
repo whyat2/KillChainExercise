@@ -6,5 +6,5 @@ And etvx from attack data -> Free version of splunk
 
 The goal is to show the flow of an attack at a very basic level. (with only stage 4/5 missing)
 
-You should accept the splunk license in docker before doing stuff (uncomment line)
+You should accept the splunk license in docker before doing stuff (uncomment line in docker compose)
 And use software at your own risk.
