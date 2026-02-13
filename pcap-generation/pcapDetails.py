@@ -4,32 +4,43 @@ import datetime
 # This file contains parameters that can be used to modify noise/story
 
 
-ip = {
-    "victim_ip": "10.0.0.25",
-    "mail_server_ip": "10.0.0.5",
-    "web_server_ip": "203.0.113.50",
-    "c2_ip": "198.51.100.77",
-    "victim_mac": "00:11:22:33:44:55",
-    "server_mac": "66:77:88:99:aa:bb",
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+import time as time_lib
 
-# For Noise
-    "google": "142.250.72.206",
-    "outlook": "52.109.76.25",
-    "office_cdn": "13.107.6.152",
-    "microsoft": "20.190.160.132"
-}
+@dataclass
+class ip:
+    # Core systems
+    victim_ip: str = "10.0.0.25"
+    mail_server_ip: str = "10.0.0.5"
+    web_server_ip: str = "203.0.113.50"
+    c2_ip: str = "198.51.100.77"
+
+    # MAC addresses
+    victim_mac: str = "00:11:22:33:44:55"
+    server_mac: str = "66:77:88:99:aa:bb"
+
+    # Noise / benign traffic
+    google: str = "142.250.72.206"
+    outlook: str = "52.109.76.25"
+    office_cdn: str = "13.107.6.152"
+    microsoft: str = "20.190.160.132"
+
+
+@dataclass
+class time:
+    # These are set automatically after initialization
+    start_attack: datetime = time_lib.mktime(time_lib.strptime("2022-09-15 15:00:42", "%Y-%m-%d %H:%M:%S"))
+    exfiltrate: datetime = time_lib.mktime(time_lib.strptime("2022-09-15 15:09:57", "%Y-%m-%d %H:%M:%S"))
+    noise_start: datetime = time_lib.mktime(time_lib.strptime("2022-09-15 15:00:25", "%Y-%m-%d %H:%M:%S"))
+    #noise_end: datetime = time_lib.mktime(time_lib.strptime("2026-02-12 16:45:00", "%Y-%m-%d %H:%M:%S"))
+
 noise_ip = [
     ("142.250.72.206", "google", "77:88:99:aa:bb:cc"),
     ("52.109.76.25",   "outlook", "88:99:aa:bb:cc:dd"),
-    ("13.107.6.152",   "officecdn", "44:55:66:77:88:99"),
+    ("13.107.6.152",   "amazon", "44:55:66:77:88:99"),
     ("20.190.160.132", "microsoft", "55:66:77:88:99:aa")
 ]
-times = {
-    "start_attack": datetime.now(),
-    "exfiltrate": datetime.now() + 100,
-    "noise_start": datetime.now() - 100,
-    "noise_end": datetime.now() + 200,
-} # fix with actual dates
 
 domains = [
     "www.google.com",

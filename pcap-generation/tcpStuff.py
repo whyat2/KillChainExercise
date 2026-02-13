@@ -14,7 +14,7 @@ def tcp_handshake(pkts, ts, i,
         IP(src=src_ip, dst=dst_ip) /
         TCP(sport=sport, dport=dport, flags="S", seq=c_seq)
     )
-    syn.time = ts(i).timestamp()
+    syn.time = ts(i)
     pkts.append(syn)
 
     # SYN-ACK
@@ -26,7 +26,7 @@ def tcp_handshake(pkts, ts, i,
             seq=s_seq,
             ack=c_seq + 1)
     )
-    synack.time = ts(i+1).timestamp()
+    synack.time = ts(i+1)
     pkts.append(synack)
 
     # ACK
@@ -38,7 +38,7 @@ def tcp_handshake(pkts, ts, i,
             seq=c_seq + 1,
             ack=s_seq + 1)
     )
-    ack.time = ts(i+2).timestamp()
+    ack.time = ts(i+2)
     pkts.append(ack)
 
     return c_seq + 1, s_seq + 1
@@ -59,7 +59,7 @@ def tcp_send(pkts, ts, i,
             ack=ack) /
         Raw(load=payload)
     )
-    pkt.time = ts(i).timestamp()
+    pkt.time = ts(i)
     pkts.append(pkt)
 
     return seq + len(payload)
@@ -78,5 +78,5 @@ def tcp_ack(pkts, ts, i,
             seq=seq,
             ack=ack)
     )
-    pkt.time = ts(i).timestamp()
+    pkt.time = ts(i)
     pkts.append(pkt)
